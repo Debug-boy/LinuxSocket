@@ -215,7 +215,7 @@ namespace infinity::socket{
 
     class CClient{
     private:
-        signed int m_fd{};
+        signed int m_fd = SOCKET_ERROR;
         ::sockaddr_in m_reg_server{};
 
     public:
@@ -232,6 +232,10 @@ namespace infinity::socket{
         explicit CClient(const sockaddr_in &sock_address) noexcept(true){
             m_reg_server = sock_address;
         }
+
+        ~CClient(){
+            close();
+        };
 
     public:
         void init() noexcept(false){
@@ -270,6 +274,17 @@ namespace infinity::socket{
             ssize_t reSize = socket::send(m_fd,(void*)(&buffer),sizeof(T));
             if(reSize > 0)return reSize;
             return {};
+        }
+
+        [[nodiscard]] bool check_fd() const noexcept(true){
+            return m_fd != SOCKET_ERROR;
+        }
+
+        void close() const noexcept(false){
+            if(check_fd()){
+                ::close(m_fd);
+            }else
+                throw socket::socket_error("fd is closed or not created!");
         }
     };
 }
