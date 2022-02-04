@@ -1,0 +1,4 @@
+/home/black/ClionProjects/CPlusPlus/LinuxSocket/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/black/ClionProjects/CPlusPlus/LinuxSocket/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/black/ClionProjects/CPlusPlus/LinuxSocket/cmake-build-debug/CMakeFiles/client.dir
+/home/black/ClionProjects/CPlusPlus/LinuxSocket/cmake-build-debug/CMakeFiles/server.dir

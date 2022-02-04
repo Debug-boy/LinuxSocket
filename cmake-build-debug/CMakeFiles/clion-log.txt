@@ -1,0 +1,4 @@
+/opt/clion/clion-2021.3.3/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/opt/clion/clion-2021.3.3/bin/ninja/linux/ninja -G Ninja /home/black/ClionProjects/CPlusPlus/LinuxSocket
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/black/ClionProjects/CPlusPlus/LinuxSocket/cmake-build-debug
