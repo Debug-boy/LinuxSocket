@@ -21,11 +21,14 @@ namespace infinity::touch{
 
     int getEventCount(){
         DIR *dir = opendir("/dev/input/");
-        dirent *ptr = nullptr;
-        int count = 0;
-        while ((ptr = readdir(dir)) != nullptr){
-            if (strstr(ptr->d_name, "event"))
-                count++;
+        dirent *ptr;
+        signed int count = 0;
+        if(dir){
+            while ((ptr = readdir(dir))){
+                if (strstr(ptr->d_name, "event")){
+                    ++count;
+                }
+            }
         }
         return count;
     }
@@ -33,7 +36,6 @@ namespace infinity::touch{
     int getTouchEventNum(){
         int eventCount = getEventCount();
         int *fdArray = (int *)malloc(eventCount * 4 + 4);
-        int result;
 
         for (int i = 0; i < eventCount; i++){
             char temp[128];
@@ -41,16 +43,12 @@ namespace infinity::touch{
             fdArray[i] = open(temp, O_RDWR | O_NONBLOCK);
         }
 
-        int k = 0;
         input_event ev{};
-        while (true)
-        {
-            for (int i = 0; i < eventCount; i++)
-            {
+        while (true){
+            for (int i = 0; i < eventCount; i++){
                 memset(&ev, 0, sizeof(ev));
                 read(fdArray[i], &ev, sizeof(ev));
-                if (ev.type == EV_ABS)
-                {
+                if (ev.type == EV_ABS){
                     free(fdArray);
                     return i;
                 }
@@ -59,7 +57,27 @@ namespace infinity::touch{
         }
     }
 
-    bool touch_Init(int *retX, int *retY){
+    void sendEventData(void *v, unsigned int count){
+        write(touchDev.fd, v, sizeof(struct input_event) * count);
+    }
+
+    void sendNullData(){
+        static constexpr unsigned int number = 2;
+        static struct input_event event[number];
+        memset(event, 0, sizeof(event));
+
+        event[0].type = EV_SYN;
+        event[0].code = SYN_REPORT;
+        event[0].value = 0;
+
+        event[1].type = EV_ABS;
+        event[1].code = ABS_MT_SLOT;
+        event[1].value = touchDev.fingerNum;
+
+        sendEventData(event, number);
+    }
+
+    bool touch_init(int *retX, int *retY){
         char tmp[256];
         sprintf(tmp, "/dev/input/event%d", getTouchEventNum());
         touchDev.fd = open(tmp, O_RDWR);
@@ -71,28 +89,6 @@ namespace infinity::touch{
         *retX = absX.maximum;
         *retY = absY.maximum;
         return true;
-    }
-
-    void sendEventData(void *v, int count){
-        write(touchDev.fd, v, sizeof(struct input_event) * count);
-    }
-
-    void sendNullData(){
-        static struct input_event event[2];
-        memset(event, 0, sizeof(event));
-
-        int tmpCnt = 0;
-        event[tmpCnt].type = EV_SYN;
-        event[tmpCnt].code = SYN_REPORT;
-        event[tmpCnt].value = 0;
-        tmpCnt++;
-
-        event[tmpCnt].type = EV_ABS;
-        event[tmpCnt].code = ABS_MT_SLOT;
-        event[tmpCnt].value = touchDev.fingerNum;
-        tmpCnt++;
-
-        sendEventData(event, tmpCnt);
     }
 
     void touch_down(int id, int x, int y){
@@ -214,37 +210,32 @@ namespace infinity::touch{
     }
 
     void touch_alloc(){
-        static struct input_event event[5];
+        static constexpr unsigned int number = 5;
+        static struct input_event event[number];
         memset(event, 0, sizeof(event));
         sendNullData();
 
-        int tmpCnt = 0;
-        event[tmpCnt].type = EV_SYN;
-        event[tmpCnt].code = SYN_REPORT;
-        event[tmpCnt].value = 0;
-        tmpCnt++;
+        event[0].type = EV_SYN;
+        event[0].code = SYN_REPORT;
+        event[0].value = 0;
 
-        event[tmpCnt].type = EV_ABS;
-        event[tmpCnt].code = ABS_MT_SLOT;
-        event[tmpCnt].value = touchDev.fingerNum;
-        tmpCnt++;
+        event[1].type = EV_ABS;
+        event[1].code = ABS_MT_SLOT;
+        event[1].value = touchDev.fingerNum;
 
-        event[tmpCnt].type = EV_ABS;
-        event[tmpCnt].code = ABS_MT_TRACKING_ID;
-        event[tmpCnt].value = 123;
-        tmpCnt++;
+        event[2].type = EV_ABS;
+        event[2].code = ABS_MT_TRACKING_ID;
+        event[2].value = 123;
 
-        event[tmpCnt].type = EV_SYN;
-        event[tmpCnt].code = SYN_REPORT;
-        event[tmpCnt].value = 0;
-        tmpCnt++;
+        event[3].type = EV_SYN;
+        event[3].code = SYN_REPORT;
+        event[3].value = 0;
 
-        event[tmpCnt].type = EV_SYN;
-        event[tmpCnt].code = SYN_REPORT;
-        event[tmpCnt].value = 0;
-        tmpCnt++;
+        event[4].type = EV_SYN;
+        event[4].code = SYN_REPORT;
+        event[4].value = 0;
 
-        sendEventData(event, tmpCnt);
+        sendEventData(event, number);
     }
 
     void touch_up(int id){
