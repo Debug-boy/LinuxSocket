@@ -132,6 +132,9 @@
 			<Option target="server"/>
 			<Option target="client"/>
 		</Unit>
+		<Unit filename="E:/ClionProjects/LinuxSocket/touch.hpp">
+			<Option target="server"/>
+		</Unit>
 		<Unit filename="E:/ClionProjects/LinuxSocket/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

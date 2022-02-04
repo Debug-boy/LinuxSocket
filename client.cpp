@@ -17,6 +17,7 @@ int main(int arg_count,char* arg_values[]){
     try{
         client.init();
         client.connect();
+
         do{
             std::cout<<"in flag and buffer:";
             std::cin>>local_pack.flag;
@@ -30,7 +31,9 @@ int main(int arg_count,char* arg_values[]){
             }
 
         } while (local_pack.flag != 65535);
+
         client.close();
+
     }catch (const socket::socket_error &error){
         std::cout<<"[exception]"<<error.what()<<std::endl;
     }

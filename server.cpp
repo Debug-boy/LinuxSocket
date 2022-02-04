@@ -1,4 +1,5 @@
 #include "socket.hpp"
+#include "touch.hpp"
 using namespace infinity;
 using namespace std;
 
@@ -17,6 +18,7 @@ int main(int argc,char *argv[]){
     std::cout<<"port    :"<<m_server.get_reg_port()<<endl;
     std::cout<<"--------------------------------------"<<endl;
 
+
     try{
         m_server.init_server();
         std::cout<<"client:["<<m_server.get_client_addr_cstr()<<"] connect."<<std::endl;
@@ -32,6 +34,7 @@ int main(int argc,char *argv[]){
         std::cout<<e.what()<<std::endl;
         m_server.close_server();
     }
+
     std::cout<<"main thread is normal exit!"<<std::endl;
     return 0;
 }
