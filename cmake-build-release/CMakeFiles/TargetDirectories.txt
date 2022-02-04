@@ -1,0 +1,4 @@
+E:/ClionProjects/LinuxSocket/cmake-build-release/CMakeFiles/server.dir
+E:/ClionProjects/LinuxSocket/cmake-build-release/CMakeFiles/client.dir
+E:/ClionProjects/LinuxSocket/cmake-build-release/CMakeFiles/edit_cache.dir
+E:/ClionProjects/LinuxSocket/cmake-build-release/CMakeFiles/rebuild_cache.dir

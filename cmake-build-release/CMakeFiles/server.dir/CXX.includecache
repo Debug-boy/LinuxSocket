@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+E:/ClionProjects/LinuxSocket/server.cpp
+socket.hpp
+E:/ClionProjects/LinuxSocket/socket.hpp
+
+E:/ClionProjects/LinuxSocket/socket.hpp
+iostream
+-
+functional
+-
+memory
+-
+optional
+-
+exception
+-
+string
+-
+sys/types.h
+-
+sys/socket.h
+-
+netinet/in.h
+-
+arpa/inet.h
+-
+unistd.h
+-
+pthread.h
+-
+
