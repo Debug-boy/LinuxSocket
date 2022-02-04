@@ -1,16 +1,6 @@
 "D:\CLion 2021.2.1\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=D:/AndroidSDK/ndk/21.4.7075529/prebuilt/windows-x86_64/bin/make.exe -DCMAKE_C_COMPILER=D:/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/windows-x86_64/bin/clang.exe -DCMAKE_CXX_COMPILER=D:/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/windows-x86_64/bin/clang++.exe -DCMAKE_TOOLCHAIN_FILE=D:\AndroidSDK\ndk\21.4.7075529\build\cmake\android.toolchain.cmake -DCMAKE_SYSTEM_NAME=Android -DANDROID_ABI=arm64-v8a -DCMAKE_ANDROID_NDK=D:\AndroidSDK\ndk\21.4.7075529 -DCMAKE_SYSTEM_VERSION=24 -DCMAKE_C_FLAGS= -DCMAKE_CXX_FLAGS= -DCMAKE_ANDROID_NDK_TOOLCHAIN_VERSION=clang -DCMAKE_DEPENDS_USE_COMPILER=FALSE -G "CodeBlocks - MinGW Makefiles" E:\ClionProjects\LinuxSocket
 -- ANDROID_PLATFORM not set. Defaulting to minimum supported version
 16.
--- Detecting C compiler ABI info
--- Detecting C compiler ABI info - done
--- Check for working C compiler: D:/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/windows-x86_64/bin/clang.exe - skipped
--- Detecting C compile features
--- Detecting C compile features - done
--- Detecting CXX compiler ABI info
--- Detecting CXX compiler ABI info - done
--- Check for working CXX compiler: D:/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/windows-x86_64/bin/clang++.exe - skipped
--- Detecting CXX compile features
--- Detecting CXX compile features - done
 -- Configuring done
 -- Generating done
 -- Build files have been written to: E:/ClionProjects/LinuxSocket/cmake-build-release

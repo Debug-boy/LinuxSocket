@@ -6,8 +6,6 @@ int main(int arg_count,char* arg_values[]){
 
     std::cout<<"this is client!"<<endl;
 
-    int32_t socket_fd = ::socket(AF_INET,SOCK_STREAM,IPPROTO_IP);
-
     sockaddr_in reg_server_info{};
     reg_server_info.sin_family = AF_INET;
     reg_server_info.sin_addr.s_addr = INADDR_ANY;
@@ -39,6 +37,5 @@ int main(int arg_count,char* arg_values[]){
     }
 
     std::cout<<"close is socket_fd"<<endl;
-    close(socket_fd);
     return 0;
 }
