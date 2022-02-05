@@ -3,4 +3,5 @@
 
 CMakeFiles/server.dir/server.cpp.o: \
  ../server.cpp \
- ../socket.hpp
+ ../socket.hpp \
+ ../touch.hpp

@@ -18,9 +18,22 @@ int main(int arg_count,char* arg_values[]){
         client.init();
         client.connect();
 
+        for(;;){
+            auto reRecv = client.recv((void*)(&local_pack),sizeof(socket::pack_message));
+            if(local_pack.flag == 32767){
+                std::cout<<"server["<<inet_ntoa(reg_server_info.sin_addr)<<"]:"<<local_pack.buffer<<endl;
+                continue;
+            }else if(local_pack.flag == 16384){
+                std::cout<<"server["<<inet_ntoa(reg_server_info.sin_addr)<<"]:"<<local_pack.buffer<<endl;
+                break;
+            }
+        }
+
+        //Session with server....
         do{
             std::cout<<"in flag and buffer:";
             std::cin>>local_pack.flag;
+            std::cin>>local_pack.x1>>local_pack.y1>>local_pack.x2>>local_pack.y2;
             std::getchar();
             std::cin.getline(local_pack.buffer,1024);
 

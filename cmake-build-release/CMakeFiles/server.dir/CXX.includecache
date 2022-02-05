@@ -9,6 +9,8 @@
 E:/ClionProjects/LinuxSocket/server.cpp
 socket.hpp
 E:/ClionProjects/LinuxSocket/socket.hpp
+touch.hpp
+E:/ClionProjects/LinuxSocket/touch.hpp
 
 E:/ClionProjects/LinuxSocket/socket.hpp
 iostream
@@ -34,5 +36,33 @@ arpa/inet.h
 unistd.h
 -
 pthread.h
+-
+
+E:/ClionProjects/LinuxSocket/touch.hpp
+malloc.h
+-
+cstdio
+-
+cstdlib
+-
+fcntl.h
+-
+unistd.h
+-
+cmath
+-
+thread
+-
+iostream
+-
+dirent.h
+-
+sys/file.h
+-
+linux/input.h
+-
+linux/uinput.h
+-
+sys/uio.h
 -
 

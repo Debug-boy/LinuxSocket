@@ -53,7 +53,7 @@ namespace infinity::touch{
                     return i;
                 }
             }
-            usleep(100);
+            usleep(1000);
         }
     }
 
@@ -77,7 +77,7 @@ namespace infinity::touch{
         sendEventData(event, number);
     }
 
-    bool touch_init(int *retX, int *retY){
+    bool touch_init(){
         char tmp[256];
         sprintf(tmp, "/dev/input/event%d", getTouchEventNum());
         touchDev.fd = open(tmp, O_RDWR);
@@ -86,13 +86,13 @@ namespace infinity::touch{
         struct input_absinfo absX{}, absY{};
         ioctl(touchDev.fd, EVIOCGABS(ABS_MT_POSITION_X), &absX);
         ioctl(touchDev.fd, EVIOCGABS(ABS_MT_POSITION_Y), &absY);
-        *retX = absX.maximum;
-        *retY = absY.maximum;
+//        int retX = absX.maximum;
+//        int retY = absY.maximum;
         return true;
     }
 
     void touch_down(int id, int x, int y){
-        static struct input_event event[9];
+        static struct input_event event[11];
         memset(event, 0, sizeof(event));
         sendNullData();
 

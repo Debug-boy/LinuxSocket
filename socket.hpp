@@ -51,7 +51,14 @@ namespace infinity::socket{
 
     struct pack_message{
         signed int flag;
-        char buffer[1024];
+        char buffer[1024]{};
+        signed x1,y1,x2,y2;
+
+        explicit pack_message(){}
+
+        explicit pack_message(signed int _flag) noexcept(true){
+            flag = _flag;
+        }
     };
 
     struct client_information{
@@ -81,12 +88,73 @@ namespace infinity::socket{
         }
     };
 
+    class [[maybe_unused]] CSocket{
+    protected:
+        std::optional<signed int>m_family = std::nullopt;
+        std::optional<signed int>m_type = std::nullopt;
+        std::optional<signed int>m_protocol = std::nullopt;
+        std::optional<signed int>m_fd = std::nullopt;
+    public:
+        using data_callback = std::function<bool(void*buffer,size_t length)>;
+        using byte_t = unsigned char;
+
+    public:
+        explicit CSocket(signed int family = AF_INET,signed int type = SOCK_STREAM,signed int protocol = IPPROTO_IP){
+            m_family = AF_INET;
+            m_type = type;
+            m_protocol = protocol;
+        }
+
+        void init() noexcept(false){
+            m_fd = ::socket(m_family.value(),m_type.value(),m_protocol.value());
+            if(m_fd == SOCKET_ERROR){
+                throw socket::socket_error(std::string("create socket file descriptor is failed!"));
+            }
+        }
+
+        [[maybe_unused]] static ssize_t send(int32_t socket_fd,void* buffer,size_t length) noexcept(true){
+            auto *local_buffer = reinterpret_cast<CSocket::byte_t*>(buffer);
+            while(length){
+                ssize_t real_length = ::send(socket_fd,local_buffer,length,MSG_NOSIGNAL);
+                if(real_length < 0)
+                    return socket::SOCKET_ERROR;//"unknown exception!"
+                else if(real_length == 0)
+                    return socket::SOCKET_CLOSE;//target is close socket!
+                local_buffer = local_buffer + real_length;
+                length = length - real_length;
+            }
+            return local_buffer - reinterpret_cast<CSocket::byte_t*>(buffer);
+        }
+
+        [[maybe_unused]] static ssize_t recv(int32_t socket_fd,void* buffer,size_t length) noexcept(true){
+            auto *local_buffer = reinterpret_cast<CSocket::byte_t*>(buffer);
+            while(length){
+                size_t real_length = ::recv(socket_fd,local_buffer,length,MSG_NOSIGNAL);
+                if(real_length < 0)
+                    return socket::SOCKET_ERROR;//unknown exception!
+                else if(real_length == 0)
+                    return socket::SOCKET_CLOSE;//target is close socket!
+                local_buffer = local_buffer + real_length;
+                length = length - real_length;
+            }
+            return local_buffer - reinterpret_cast<CSocket::byte_t*>(buffer);
+        }
+
+        template<typename T>
+        void send(T *buffer) const noexcept(false){
+
+        }
+
+        void close() const noexcept(true){
+            ::close(m_fd.value());
+        }
+    };
+
     class CServer{
     private:
-        std::optional<signed int>m_fd;
+        std::optional<signed int>m_fd{};
         ::sockaddr_in m_sockaddr{};
-        socket::client_information m_target_client{};
-
+        socket::client_information m_target_client{.fd = SOCKET_ERROR};
     public:
         using data_callback = std::function<bool(void* buffer,size_t length)>;
 
@@ -119,7 +187,7 @@ namespace infinity::socket{
         }
 
         ~CServer(){
-            this->close_server();
+            this->close();
         };
 
     public:
@@ -180,13 +248,13 @@ namespace infinity::socket{
         }
 
         [[nodiscard]] bool online() const{
-            signed int hert_value = INT32_MAX;
-            return socket::send(m_target_client.fd,(void*)(&hert_value),sizeof(int32_t)) != 0;
+            signed int heart_value = INT32_MAX;
+            return socket::send(m_target_client.fd,(void*)(&heart_value),sizeof(int32_t)) != 0;
         }
 
-        void close_server() const noexcept(true){
-            close(m_target_client.fd);
-            close(m_fd.value());
+        void close() const noexcept(true){
+            ::close(m_target_client.fd);
+            ::close(m_fd.value());
         }
 
     public:
